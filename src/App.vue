@@ -14,6 +14,7 @@
         @increase="increaseDone"
         @decrease="decreaseDone"
         @deleteItem="deleteItem"
+        @updateList="updateList"
       />
       Tổng số công việc đã hoàn thành: {{ checkItems }}
     </div>
@@ -46,32 +47,38 @@ export default {
     getKey() {
       return new Date().getTime();
     },
+    saveToLocalStore() {
+      localStorage.setItem("list-todos",JSON.stringify(this.listTodos))
+    },
     addTodo() {
       const value = this.$refs.todo.value;
       this.$refs.todo.focus();
       if (!value) return;
       this.listTodos.push({ content: value, id: this.getKey(), checked: false });
-      localStorage.setItem("list-todos",JSON.stringify(this.listTodos))
+      this.saveToLocalStore()
       this.$refs.todo.value = "";
     },
     increaseDone(index) {
       this.checkItems += 1;
       this.listTodos[index].checked = true;
-      localStorage.setItem("list-todos",JSON.stringify(this.listTodos))
+      this.saveToLocalStore()
     },
     decreaseDone(index) {
       this.checkItems -= 1;
       if (this.listTodos[index]) 
         this.listTodos[index].checked = false;
-      localStorage.setItem("list-todos",JSON.stringify(this.listTodos))
+      this.saveToLocalStore()
 
     },
     deleteItem(index) {
-      console.log(this.listTodos[index].checked);
       if (this.listTodos[index].checked) this.decreaseDone();
       this.listTodos.splice(index, 1);
-      localStorage.setItem("list-todos",JSON.stringify(this.listTodos))
+      this.saveToLocalStore()
     },
+    updateList(index, content){
+      this.listTodos[index].content = content
+      localStorage.setItem("list-todos",JSON.stringify(this.listTodos))
+    }
   },
 };
 </script>
@@ -106,6 +113,18 @@ input[type="text"] {
   color: #fff;
   background-color: #28a745;
   border-color: #28a745;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #3c71e4;
+  border-color: #3c71e4;
+}
+
+.btn-danger {
+  color: #fff;
+  background-color: #f03453;
+  border-color: #f03453;
 }
 
 .input-todo {
