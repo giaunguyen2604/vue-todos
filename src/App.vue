@@ -2,7 +2,7 @@
   <div id="app">
     <div class="list-todos">
       <div class='input-todo'>
-        <input type="text" placeholder="Input todo" ref="todo" />
+        <input type="text" placeholder="Input todo" ref="todo" @keyup.enter='addTodo'/>
         <button class="btn-success" @click="addTodo">Add todo</button>
       </div>
       <h2>LIST TODOS</h2>
